@@ -1,0 +1,238 @@
+[level]
+music = "sound/vt.vgm"
+night = true
+spawn = [
+	{ x=620, y=841 },
+]
+
+[objects.static]
+level_transition = [
+	{ path="maps/pv/pv1", left=624, top=832, right=626, bottom=880 }
+]
+map_transition = [
+	{ selection=7, left=288, top=928, right=320, bottom=944 }
+]
+breakable_block = [
+	{ tile_x=5, tile_y=3, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=5, tile_y=4, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=6, tile_y=3, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=9, tile_y=3, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=10, tile_y=3, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=10, tile_y=4, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	
+	{ tile_x=2, tile_y=11, path="maps/pv/block3.png", particle_path="maps/pv/rock.png", drops_ring=true },
+	{ tile_x=2, tile_y=12, path="maps/pv/block3.png", particle_path="maps/pv/rock.png", drops_ring=true },
+	
+	{ tile_x=6, tile_y=9, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=6, tile_y=10, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=6, tile_y=11, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=6, tile_y=12, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=6, tile_y=13, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=6, tile_y=14, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=6, tile_y=15, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=6, tile_y=16, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=6, tile_y=17, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=6, tile_y=18, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=6, tile_y=19, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=6, tile_y=20, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=7, tile_y=9, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=7, tile_y=10, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=7, tile_y=11, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=7, tile_y=12, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=7, tile_y=13, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=7, tile_y=14, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=7, tile_y=15, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=7, tile_y=16, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=7, tile_y=17, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=7, tile_y=18, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=7, tile_y=19, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=7, tile_y=20, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	
+	{ tile_x=11, tile_y=12, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=11, tile_y=13, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=11, tile_y=14, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=11, tile_y=15, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=11, tile_y=16, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=11, tile_y=17, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=11, tile_y=18, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=11, tile_y=19, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=11, tile_y=20, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=12, tile_y=12, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=12, tile_y=13, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=12, tile_y=14, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=12, tile_y=15, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=12, tile_y=16, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=12, tile_y=17, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=12, tile_y=18, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=12, tile_y=19, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=12, tile_y=20, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	
+	{ tile_x=16, tile_y=10, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=16, tile_y=11, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=16, tile_y=12, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=16, tile_y=13, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=16, tile_y=14, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=16, tile_y=15, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=16, tile_y=16, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=16, tile_y=17, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=16, tile_y=18, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=16, tile_y=19, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=16, tile_y=20, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=17, tile_y=10, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=17, tile_y=11, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=17, tile_y=12, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=17, tile_y=13, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=17, tile_y=14, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=17, tile_y=15, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=17, tile_y=16, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=17, tile_y=17, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=17, tile_y=18, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=17, tile_y=19, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=17, tile_y=20, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	
+	{ tile_x=21, tile_y=11, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=21, tile_y=12, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=21, tile_y=13, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=21, tile_y=14, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=21, tile_y=15, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=21, tile_y=16, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=21, tile_y=17, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=21, tile_y=18, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=21, tile_y=19, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=22, tile_y=11, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=22, tile_y=12, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=22, tile_y=13, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=22, tile_y=14, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=22, tile_y=15, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=22, tile_y=16, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=22, tile_y=17, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=22, tile_y=18, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=22, tile_y=19, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	
+	{ tile_x=25, tile_y=5, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=25, tile_y=6, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=25, tile_y=7, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=25, tile_y=8, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=25, tile_y=9, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=25, tile_y=10, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=25, tile_y=11, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=25, tile_y=12, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=26, tile_y=5, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=26, tile_y=6, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=26, tile_y=7, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=26, tile_y=8, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=26, tile_y=9, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=26, tile_y=10, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=26, tile_y=11, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=26, tile_y=12, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	
+	{ tile_x=52, tile_y=4, path="maps/pv/block3.png", particle_path="maps/pv/rock.png", drops_ring=true },
+	{ tile_x=52, tile_y=5, path="maps/pv/block3.png", particle_path="maps/pv/rock.png", drops_ring=true },
+	
+	{ tile_x=5, tile_y=27, path="maps/pv/block3.png", particle_path="maps/pv/rock.png", drops_ring=true },
+	{ tile_x=5, tile_y=28, path="maps/pv/block3.png", particle_path="maps/pv/rock.png", drops_ring=true },
+	
+	{ tile_x=27, tile_y=26, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=27, tile_y=27, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=27, tile_y=28, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=28, tile_y=26, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=28, tile_y=27, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=28, tile_y=28, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	
+	{ tile_x=45, tile_y=26, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=45, tile_y=27, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=45, tile_y=28, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=46, tile_y=26, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=46, tile_y=27, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=46, tile_y=28, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	
+	{ tile_x=18, tile_y=45, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=18, tile_y=46, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=19, tile_y=45, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=19, tile_y=46, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	
+	{ tile_x=31, tile_y=36, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=31, tile_y=37, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=31, tile_y=38, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=32, tile_y=36, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=32, tile_y=37, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=32, tile_y=38, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	
+	{ tile_x=33, tile_y=37, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=34, tile_y=37, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	
+	{ tile_x=35, tile_y=36, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=35, tile_y=37, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=35, tile_y=38, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=36, tile_y=36, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=36, tile_y=37, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=36, tile_y=38, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	
+	{ tile_x=37, tile_y=37, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=38, tile_y=37, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	
+	{ tile_x=39, tile_y=36, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=39, tile_y=37, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=39, tile_y=38, path="maps/pv/block1.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=40, tile_y=36, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=40, tile_y=37, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=40, tile_y=38, path="maps/pv/block2.png", particle_path="maps/pv/rock.png" },
+	
+	{ tile_x=56, tile_y=37, path="maps/pv/block3.png", particle_path="maps/pv/rock.png", drops_ring=true },
+	
+	{ tile_x=48, tile_y=22, path="maps/pv/block4.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=49, tile_y=22, path="maps/pv/block4.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=50, tile_y=22, path="maps/pv/block4.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=51, tile_y=22, path="maps/pv/block4.png", particle_path="maps/pv/rock.png" },
+	{ tile_x=52, tile_y=22, path="maps/pv/block4.png", particle_path="maps/pv/rock.png" },
+]
+bridge = [
+	{ path="maps/pv/bridge.png", particle_path="maps/pv/rock.png", leftx=288, rightx=319, y=624 },
+	{ path="maps/pv/bridge.png", particle_path="maps/pv/rock.png", leftx=144, rightx=159, y=496 },
+	{ path="maps/pv/bridge.png", particle_path="maps/pv/rock.png", leftx=176, rightx=191, y=496 },
+	{ path="maps/pv/bridge.png", particle_path="maps/pv/rock.png", leftx=336, rightx=351, y=496 },
+	{ path="maps/pv/bridge.png", particle_path="maps/pv/rock.png", leftx=368, rightx=383, y=496 },
+	{ path="maps/pv/bridge.png", particle_path="maps/pv/rock.png", leftx=240, rightx=287, y=432 },
+]
+wind = [
+	{ left=752, top=672, right=848, bottom=880, xsp=0, ysp=-1, animation="flame" },
+	{ left=112, top=512, right=448, bottom=624, xsp=0, ysp=1, animation="flame" },
+	{ left=96, top=64, right=432, bottom=400, xsp=0, ysp=1, animation="flame" },
+]
+fire = [
+	{ tile_x=13, tile_y=30, offset_x=-24, offset_y=8 },
+	{ tile_x=20, tile_y=30, offset_y=8, flip=true },
+]
+item_box = [
+	{ tile_x=34, tile_y=43, number=9, item_name="fang" },
+	{ tile_x=7, tile_y=1, offset_x=8, number=1, item_name="large_bomb" },
+]
+
+[objects.default]
+bat_robot = [
+	{ tile_x=49, tile_y=35, offset_x=-4 },
+	{ tile_x=22, tile_y=32, offset_x=-4 },
+	{ tile_x=10, tile_y=32, offset_x=-4 },
+	{ tile_x=44, tile_y=20, offset_x=-4 },
+	{ tile_x=37, tile_y=20, offset_x=-4 },
+	{ tile_x=30, tile_y=20, offset_x=-4 },
+	{ tile_x=37, tile_y=3, offset_x=-4 },
+]
+nezu = [
+	{ tile_x=37, tile_y=38 },
+	{ tile_x=33, tile_y=36 },
+	{ tile_x=18, tile_y=44 },
+	{ tile_x=50, tile_y=25 },
+	{ tile_x=3, tile_y=14 },
+]
+drill_mole = [
+	{ tile_x=29, tile_y=29, offset_x=4, offset_y=-26 },
+	{ tile_x=35, tile_y=29, offset_x=4, offset_y=-26 },
+	{ tile_x=41, tile_y=29, offset_x=4, offset_y=-26 },
+]
+flame = [
+	{ tile_x=13, tile_y=46, offset_x=12 },
+	{ tile_x=25, tile_y=46, offset_x=12 },
+	{ tile_x=50, tile_y=30, offset_x=12 },
+]
+
