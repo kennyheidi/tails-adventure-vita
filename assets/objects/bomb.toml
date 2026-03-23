@@ -1,0 +1,18 @@
+[sprite]
+image = "bomb.png"
+width = 16
+height = 16
+
+[animations.remote]
+frames = [0, 1]
+delay = 12
+
+[animations.napalm]
+frames = [2, 3]
+delay = 8
+
+[animations.large]
+frames = [0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 0, 1, 0, 1, 0, 1]
+delay = 4
+repeat = 1
+
