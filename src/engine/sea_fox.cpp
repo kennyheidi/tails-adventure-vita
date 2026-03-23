@@ -1,0 +1,367 @@
+#include "sea_fox.h"
+#include "anti_air_missile.h"
+#include "bullet.h"
+#include "controller.h"
+#include "hud.h"
+#include "mine.h"
+#include "object_set.h"
+#include "ring.h"
+#include "save.h"
+#include "sparkle.h"
+#include "splash.h"
+#include "tools.h"
+
+void TA_SeaFox::load(TA_Links links) {
+    this->links = links;
+
+    loadFromToml("tails/seafox.toml");
+    setCamera(links.camera);
+    setAnimation("idle");
+
+    jumpSound.load("sound/jump.ogg", TA_SOUND_CHANNEL_SFX1);
+    damageSound.load("sound/damage.ogg", TA_SOUND_CHANNEL_SFX1);
+    bulletSound.load("sound/bullet.ogg", TA_SOUND_CHANNEL_SFX3);
+    extraSpeedSound.load("sound/extra_speed.ogg", TA_SOUND_CHANNEL_SFX3);
+    waterSound.load("sound/water.ogg", TA_SOUND_CHANNEL_SFX1);
+
+    hitbox.setRectangle(TA_Point(9, 4), TA_Point(23, 30));
+
+    debugMode = TA::arguments.contains("--debug");
+}
+
+void TA_SeaFox::setSpawnPoint(TA_Point position, bool flip) {
+    this->position = position;
+    this->flip = this->neededFlip = flip;
+    setPosition(position);
+    updateFollowPosition();
+    links.camera->setFollowPosition(&followPosition);
+}
+
+void TA_SeaFox::update() {
+    if(hidden) {
+        return;
+    }
+
+    if(dead) {
+        updateDead();
+        setFlip(flip);
+        return;
+    }
+
+    if(debugMode) {
+        if(TA::keyboard::isScancodeJustPressed(SDL_SCANCODE_X)) {
+            noclip = !noclip;
+        }
+        if(noclip) {
+            position += links.controller->getDirectionVector() * TA::elapsedTime * 5;
+            setPosition(position);
+            updateFollowPosition();
+            return;
+        }
+    }
+
+    physicsStep();
+
+    updateDirection();
+    updateFollowPosition();
+    updateDrill();
+    updateItem();
+    updateSparkle();
+    updateDamage();
+
+    setFlip(flip);
+}
+
+void TA_SeaFox::physicsStep() {
+    auto updateSpeed = [](float& currentSpeed, float neededSpeed, float drag) {
+        if(currentSpeed > neededSpeed) {
+            currentSpeed = std::max(neededSpeed, currentSpeed - drag * TA::elapsedTime);
+        } else {
+            currentSpeed = std::min(neededSpeed, currentSpeed + drag * TA::elapsedTime);
+        }
+    };
+
+    float waterLevel = links.objectSet->getWaterLevel();
+    bool underwater = (position.y + 30 > waterLevel);
+
+    if(flyMode) {
+        updateSpeed(velocity.x, (flip ? -1 : 1) * flyXSpeed, inputDrag);
+        if(links.controller->getDirection() != TA_DIRECTION_MAX) {
+            TA_Point vector = links.controller->getDirectionVector();
+            updateSpeed(velocity.y, vector.y * flyYSpeed, airDrag);
+        } else {
+            updateSpeed(velocity.y, 0, airDrag);
+        }
+    } else {
+        if(links.controller->getDirection() != TA_DIRECTION_MAX) {
+            TA_Point vector = links.controller->getDirectionVector();
+            updateSpeed(velocity.x, vector.x + (vector.x > 0 && extraSpeed ? 1.0F : 0.0F), inputDrag);
+            if(underwater) {
+                updateSpeed(velocity.y, vector.y, inputDrag);
+            }
+        } else {
+            updateSpeed(velocity.x, 0, (groundMode ? inputDrag : horizontalDrag));
+            if(underwater) {
+                updateSpeed(velocity.y, 0, (groundMode ? inputDrag : verticalDrag));
+            }
+        }
+    }
+
+    if(!underwater) {
+        velocity.y = std::min(float(1), velocity.y + deadGravity * TA::elapsedTime);
+    }
+
+    if(groundMode) {
+        if(ground) {
+            velocity.y = 0;
+            setVelocityAdd({-0.5, 0});
+            if(links.controller->isJustPressed(TA_BUTTON_A)) {
+                if(extraSpeed) {
+                    extraSpeedSound.fadeOut(0);
+                    extraSpeed = false;
+                    extraSpeedReleaseTime = extraSpeedTimer;
+                }
+                jumpSound.play();
+                jumpSpeed = initJumpSpeed;
+                if(extraSpeedTimer < extraSpeedReleaseTime + extraSpeedAddTime) {
+                    jumpSpeed += extraSpeedAddYSpeed * std::min(1.0F, extraSpeedReleaseTime / extraSpeedTime);
+                    extraSpeedTimer = extraSpeedReleaseTime + extraSpeedAddTime + 1;
+                }
+                velocity.y = std::min(maxYSpeed, std::max(minJumpSpeed, jumpSpeed));
+                jump = true;
+                ground = false;
+                jumpReleased = false;
+            }
+        } else {
+            if(jump) {
+                if(!jumpReleased && !links.controller->isPressed(TA_BUTTON_A)) {
+                    jumpReleased = true;
+                }
+                if(jumpReleased) {
+                    jumpSpeed = std::max(jumpSpeed, releaseJumpSpeed);
+                }
+                jumpSpeed += gravity * TA::elapsedTime;
+                velocity.y = std::min(maxYSpeed, std::max(minJumpSpeed, jumpSpeed));
+            } else {
+                velocity.y = std::min(maxYSpeed, velocity.y + gravity * TA::elapsedTime);
+            }
+        }
+    }
+
+    if(groundMode) {
+        auto [delta, flags] = links.objectSet->moveAndCollide(position, TA_Point(9, 4), TA_Point(23, 30),
+            (velocity + velocityAdd) * TA::elapsedTime, TA_COLLISION_SOLID, ground);
+        position += delta;
+        ground = (flags & TA_GROUND_COLLISION) != 0;
+        if((flags & TA_WALL_COLLISION) != 0) {
+            velocity.x = 0;
+        }
+    } else {
+        auto [delta, flags] = links.objectSet->moveAndCollide(position, TA_Point(9, 4), TA_Point(23, 30),
+            (velocity + velocityAdd) * TA::elapsedTime, TA_COLLISION_SOLID, false);
+        position += delta;
+        if((flags & TA_WALL_COLLISION) != 0) {
+            velocity.x = 0;
+        }
+        if((flags & (TA_GROUND_COLLISION | TA_CEIL_COLLISION)) != 0) {
+            velocity.y = 0;
+        }
+    }
+
+    setPosition(position);
+    velocityAdd = {0, 0};
+
+    bool newUnderwater = (position.y + 30 > waterLevel);
+    if(newUnderwater != underwater) {
+        links.objectSet->spawnObject<TA_Splash>(position + TA_Point(8, 12));
+        waterSound.play();
+    }
+
+    // TA::printLog("%f %f", position.x, position.y);
+}
+
+void TA_SeaFox::updateDirection() {
+    if(flip != neededFlip) {
+        if(!isAnimated()) {
+            setAnimation("idle");
+            flip = neededFlip;
+        }
+        return;
+    }
+    if(links.controller->isJustPressed(TA_BUTTON_A) && !groundMode && !flyMode) {
+        setAnimation("rotate");
+        neededFlip = !flip;
+        return;
+    }
+    if(flyMode) {
+        if(!flip && links.controller->getDirection() == TA_DIRECTION_LEFT) {
+            setAnimation("rotate");
+            neededFlip = true;
+            return;
+        }
+        if(flip && links.controller->getDirection() == TA_DIRECTION_RIGHT) {
+            setAnimation("rotate");
+            neededFlip = false;
+            return;
+        }
+    }
+}
+
+void TA_SeaFox::updateFollowPosition() {
+    followPosition =
+        position + TA_Point(getWidth() / 2, getHeight() / 2) - TA_Point(TA::screenWidth / 2, TA::screenHeight / 2);
+    followPosition.x += (flip ? -1 : 1) * (TA::screenWidth * 0.15);
+}
+
+void TA_SeaFox::updateDrill() {
+    if(flip) {
+        drillHitbox.setRectangle(TA_Point(2, 10), TA_Point(16, 24));
+    } else {
+        drillHitbox.setRectangle(TA_Point(24, 10), TA_Point(30, 24));
+    }
+    drillHitbox.setPosition(position);
+}
+
+void TA_SeaFox::updateItem() {
+    if(extraSpeedTimer < extraSpeedReleaseTime + extraSpeedAddTime) {
+        extraSpeedTimer += TA::elapsedTime;
+    }
+    if(extraSpeed) {
+        if(!links.controller->isPressed(TA_BUTTON_B) || links.hud->getCurrentItem() != ITEM_EXTRA_SPEED ||
+            !TA::sound::isPlaying(TA_SOUND_CHANNEL_SFX3)) {
+            extraSpeedSound.fadeOut(0);
+            extraSpeed = false;
+            extraSpeedReleaseTime = extraSpeedTimer;
+        }
+    }
+    if(vulcanGunTimer < vulcanGunTime) {
+        updateVulcanGun();
+        return;
+    }
+    if(!links.controller->isJustPressed(TA_BUTTON_B)) {
+        return;
+    }
+
+    switch(links.hud->getCurrentItem()) {
+        case ITEM_VULCAN_GUN:
+            vulcanGunTimer = 0;
+            break;
+        case ITEM_ANTI_AIR_MISSILE:
+            if(!links.objectSet->hasCollisionType(TA_COLLISION_BOMB)) {
+                links.objectSet->spawnObject<TA_AntiAirMissile>(position + TA_Point(8, -12));
+            }
+            break;
+        case ITEM_EXTRA_SPEED:
+            if(ground) {
+                extraSpeedSound.play();
+                extraSpeed = true;
+                extraSpeedTimer = 0;
+            } else {
+                damageSound.play();
+            }
+            break;
+        case ITEM_MINE:
+            if(!links.objectSet->hasCollisionType(TA_COLLISION_BOMB)) {
+                links.objectSet->spawnObject<TA_Mine>(position + TA_Point((flip ? 8 : 16), 23), velocity.x);
+            }
+            break;
+        case ITEM_EXTRA_ARMOR:
+            extraArmor = !extraArmor;
+            break;
+        default:
+            damageSound.play();
+            break;
+    }
+}
+
+void TA_SeaFox::updateVulcanGun() {
+    int prev = vulcanGunTimer / vulcanGunInterval;
+    vulcanGunTimer += TA::elapsedTime;
+    int cur = vulcanGunTimer / vulcanGunInterval;
+
+    if(prev != cur) {
+        TA_Point bulletPosition = position + TA_Point((flip ? 0 : 26), 20);
+        TA_Point bulletVelocity = TA_Point((flip ? -4 : 4) + velocity.x, 0);
+        links.objectSet->spawnObject<TA_VulcanGunBullet>(bulletPosition, bulletVelocity);
+        bulletSound.play();
+    }
+}
+
+void TA_SeaFox::updateSparkle() {
+    if(!extraArmor) {
+        return;
+    }
+
+    float newSparkleTimer = sparkleTimer + TA::elapsedTime;
+    if(sparkleTimer < sparklePeriod && sparklePeriod <= newSparkleTimer) {
+        int minX = static_cast<int>(position.x);
+        int maxX = static_cast<int>(position.x + 26);
+        int minY = static_cast<int>(position.y);
+        int maxY = static_cast<int>(position.y + 28);
+        TA_Point sparklePos;
+        sparklePos.x = minX + TA::random::next() % (maxX - minX + 1);
+        sparklePos.y = minY + TA::random::next() % (maxY - minY + 1);
+        links.objectSet->spawnObject<TA_Sparkle>(sparklePos);
+    }
+
+    sparkleTimer = std::fmod(newSparkleTimer, sparklePeriod);
+}
+
+void TA_SeaFox::updateDamage() {
+    hitbox.setPosition(position);
+    if(invincibleTimer < invincibleTime) {
+        invincibleTimer += TA::elapsedTime;
+        setAlpha(180);
+        return;
+    }
+    setAlpha(255);
+
+    if(!extraArmor && (links.objectSet->checkCollision(hitbox) & TA_COLLISION_DAMAGE) != 0) {
+        if(TA::save::getParameter("ring_drop")) {
+            dropRings();
+            if(!debugMode) {
+                links.objectSet->addRings(-4);
+            }
+        } else {
+            if(!debugMode) {
+                links.objectSet->addRings(-2);
+            }
+        }
+        TA::gamepad::rumble(0.75, 0.75, 20);
+        if(TA::save::getSaveParameter("rings") <= 0) {
+            TA::sound::playMusic("sound/death.vgm", 0);
+            setAnimation("dead");
+            dead = true;
+        } else {
+            velocity = velocity * -1;
+            invincibleTimer = 0;
+            damageSound.play();
+        }
+    }
+}
+
+void TA_SeaFox::dropRings() {
+    if(TA::save::getSaveParameter("rings") <= 4) {
+        return;
+    }
+    TA_Point ringPosition = position + TA_Point(20, 20);
+    links.objectSet->spawnObject<TA_Ring>(ringPosition, TA_Point(1.5, -1), 64);
+    links.objectSet->spawnObject<TA_Ring>(ringPosition, TA_Point(-1.5, -1), 64);
+    links.objectSet->spawnObject<TA_Ring>(ringPosition, TA_Point(0.75, -2), 64);
+    links.objectSet->spawnObject<TA_Ring>(ringPosition, TA_Point(-0.75, -2), 64);
+}
+
+void TA_SeaFox::updateDead() {
+    velocity.x = 0;
+    velocity.y += deadGravity * TA::elapsedTime;
+    position = position + velocity * TA::elapsedTime;
+    setPosition(position);
+
+    deadTimer += TA::elapsedTime;
+    flip = (getAnimationFrame() >= 3);
+}
+
+void TA_SeaFox::setHide(bool hidden) {
+    this->hidden = hidden;
+    setAlpha(hidden ? 0 : 255);
+}
