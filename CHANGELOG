@@ -1,0 +1,139 @@
+=======================
+        v0.3.1
+=======================
+
+- New levels: Coco Island and Lake Rocky path to it
+- New bosses: Mecha Golem Mk. 2, Dr. Fukurokov
+- New items: Large Bomb, Fang, Mine, Extra Armor
+- Game is now saved on quit
+- Added water splash animations
+- Fixed crash in HitboxContainer
+- Fixed crash when using Radio
+- Restructured and refactored code
+- Added debug mode and noclip
+
+=======================
+        v0.3.0
+=======================
+
+- New levels: Green Island, Lake Crystal, Polly Mt. 2
+- New items: Anti-air Missile, Extra Speed
+- Optimization improvements (around 2x increase in FPS)
+- Support for adjusting internal resolution
+- Added mod support
+- TMX tilemap parsing with tmx++
+- Moved game config files to TOML format
+- Initial macOS support (build from source)
+- Formatted all code with clang-format
+
+=======================
+        v0.2.3
+=======================
+
+- Added item hotswap menu
+- Added ring collect animation
+- Added stationary rings
+- Added option to hide onscreen controls
+- New item: Triple Bomb
+- Refactored and optimized geometric algorithms
+- Moved Android project to CMake
+- Added support for link time optimization
+
+=======================
+        v0.2.2
+=======================
+
+- Optimized tilemap rendering (2-4x performance boost)
+- Added support for more Android ABIs
+- Fixed gamepad controls
+- Fixed bombs exploding on particles
+- Fixed remote bombs exploding on spikes
+- Added option to display frame time (hidden)
+- Minor bugfixes
+
+=======================
+        v0.2.1
+=======================
+
+- Added Android release
+- New data select and options menu
+- Adapted interface for touchscreen
+- Adapted game for different screen aspect ratios
+- Improved player controls
+- Migrated to SDL3
+- Added adaptive V-Sync
+- Added smooth/sharp scale mode switch
+- Removed software FPS cap
+- New versioning system
+
+=======================
+  v0.2.0 (demo-2.0.0)
+=======================
+
+- New levels: Lake Rocky, Cavern Island and Caron Forest
+- New items: Vulcan Gun and Napalm Bomb
+- Changed max rings formula
+- Changed Bird Walker behavior
+- Improved camera locking
+- 8:7 pixel aspect ratio like on Game Gear (optional)
+- Fixes for non-standart screen aspect ratios
+- Most dependent libraries are now statically linked, reduced game size to ~10MB
+- Music is now in VGM format
+- Optimized collision algorithm
+- Sound effects and common textures are now preloaded for lower latency
+- Added binary release for Linux amd64
+- Moved to CMake and vendored libraries
+
+=======================
+  v0.1.5 (demo-1.5.0)
+=======================
+
+- Better player controls in the air
+- Chaos emerald now adds 5 to max rings
+- Genesis-like Bird Walker flash effect
+- Support installing on Linux system
+- tails-adventure is now available on AUR
+- Minor bugfixes
+
+=======================
+  v0.1.4 (demo-1.4.0)
+=======================
+
+- Source code is now open
+- Initial Linux support (build from source for your distro)
+- Added pause menu with item switching
+- Removed exit on ESC
+
+=======================
+  v0.1.3 (demo-1.3.0)
+=======================
+
+- Game progress is now saved
+- Removed updater
+- Config file is now located in game directory
+- Replaced Insta-Shield with Hammer
+- Changed Teleport Device location
+- Added more flight animations
+
+=======================
+  v0.1.2 (demo-1.2.0)
+=======================
+
+- Added options menu
+- Added software FPS cap
+- Improved gamepad controls, added gamepad rumble
+- Improved PF boss behaviour, added flash when boss gets hit
+- Added Speed Boots
+- Remade Insta-Shield
+
+=======================
+  v0.1.1 (demo-1.1.0)
+=======================
+
+- Added updater
+
+=======================
+  v0.1.0 (demo-1.0.0)
+=======================
+
+First demo featuring first 3 areas - Poloy Forest, Volcanic Tunnel and Polly Mt. 1.

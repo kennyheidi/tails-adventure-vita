@@ -1,0 +1,229 @@
+cmake_minimum_required(VERSION 3.22)
+project(tails-adventure)
+
+option(TA_STATIC "Statically link libgcc and libstdc++" OFF)
+option(TA_UNIX_INSTALL "Install on Unix filesystem" OFF)
+option(TA_LTO "Enable link time optimization" ON)
+option(TA_SANITIZE "Build with sanitizers" OFF)
+option(TA_CLANG_TIDY "Run clang-tidy alongside with building" OFF)
+
+set(CMAKE_CXX_STANDARD 23)
+
+if(TA_LTO)
+    include(CheckIPOSupported)
+    check_ipo_supported(RESULT LTO_SUPPORTED)
+    if(LTO_SUPPORTED)
+        message(STATUS "LTO enabled")
+        set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
+    else()
+        message(STATUS "LTO not supported by compiler")
+    endif()
+endif()
+
+if(APPLE)
+    enable_language(OBJC)
+endif()
+
+if(ANDROID)
+    add_compile_definitions(_LIBCPP_HAS_NO_OFF_T_FUNCTIONS)
+endif()
+
+if(TA_SANITIZE)
+    add_compile_options(-fsanitize=address,leak,undefined)
+    add_link_options(-fsanitize=address,leak,undefined)
+endif()
+
+add_compile_options(-Wno-deprecated-literal-operator)
+
+# Detect Vita build
+if(DEFINED ENV{VITASDK} OR CMAKE_SYSTEM_NAME STREQUAL "Generic")
+    set(VITA_BUILD ON)
+else()
+    set(VITA_BUILD OFF)
+endif()
+
+if(ANDROID)
+    set(BUILD_SHARED_LIBS ON)
+else()
+    set(BUILD_SHARED_LIBS OFF)
+    set(SDL_STATIC ON)
+    set(SDL_DISABLE_INSTALL ON)
+endif()
+
+add_subdirectory(external/SDL EXCLUDE_FROM_ALL)
+
+if(ANDROID)
+    set(BUILD_SHARED_LIBS OFF)
+endif()
+
+set(SDLIMAGE_VENDORED ON)
+set(SDLIMAGE_DEPS_SHARED OFF)
+set(SDLIMAGE_INSTALL OFF)
+set(SDLIMAGE_PNG ON)
+set(SDLIMAGE_AVIF OFF)
+set(SDLIMAGE_BMP OFF)
+set(SDLIMAGE_GIF OFF)
+set(SDLIMAGE_JPG OFF)
+set(SDLIMAGE_JXL OFF)
+set(SDLIMAGE_LBM OFF)
+set(SDLIMAGE_PCX OFF)
+set(SDLIMAGE_PNM OFF)
+set(SDLIMAGE_QOI OFF)
+set(SDLIMAGE_SVG OFF)
+set(SDLIMAGE_TGA OFF)
+set(SDLIMAGE_TIF OFF)
+set(SDLIMAGE_WEBP OFF)
+set(SDLIMAGE_XCF OFF)
+set(SDLIMAGE_XPM OFF)
+set(SDLIMAGE_XV OFF)
+
+set(SDLMIXER_VENDORED ON)
+set(SDLMIXER_DEPS_SHARED OFF)
+set(SDLMIXER_INSTALL OFF)
+set(SDLMIXER_GME ON)
+set(SDLMIXER_FLAC OFF)
+set(SDLMIXER_MOD OFF)
+set(SDLMIXER_MP3 OFF)
+set(SDLMIXER_MIDI OFF)
+set(SDLMIXER_OPUS OFF)
+set(SDLMIXER_WAVE OFF)
+set(SDLMIXER_WAVPACK OFF)
+
+set(USE_GME_VGM ON)
+set(USE_GME_AY OFF)
+set(USE_GME_GBS OFF)
+set(USE_GME_GYM OFF)
+set(USE_GME_HES OFF)
+set(USE_GME_KSS OFF)
+set(USE_GME_NSF OFF)
+set(USE_GME_NSFE OFF)
+set(USE_GME_SAP OFF)
+set(USE_GME_SPC OFF)
+
+set(TMXPP_BASE64 OFF)
+set(TMXPP_ZSTD OFF)
+set(TMXPP_ZLIB OFF)
+set(TOML11_PRECOMPILE ON)
+
+add_subdirectory(external/SDL_image EXCLUDE_FROM_ALL)
+add_subdirectory(external/SDL_mixer EXCLUDE_FROM_ALL)
+add_subdirectory(external/tmxpp EXCLUDE_FROM_ALL)
+add_subdirectory(external/toml11 EXCLUDE_FROM_ALL)
+
+target_compile_options(toml11 PRIVATE -Wno-error)
+
+if(WIN32)
+    enable_language("RC")
+    set(WIN32_RESOURCES res/icon.rc)
+endif()
+
+file(GLOB_RECURSE TA_SOURCES src/*.cpp)
+
+if(ANDROID)
+    add_library(tails-adventure SHARED ${TA_SOURCES})
+elseif(VITA_BUILD)
+    add_executable(tails-adventure ${TA_SOURCES})
+    if(COMMAND vita_create_self)
+        vita_create_self(tails-adventure.self tails-adventure)
+        vita_create_vpk(TailsAdventure.vpk "TAIL00001" tails-adventure.self
+            VERSION "01.00"
+            NAME "Tails Adventure"
+            FILE assets assets
+        )
+    endif()
+else()
+    add_executable(tails-adventure ${TA_SOURCES} ${WIN32_RESOURCES})
+endif()
+
+target_compile_options(tails-adventure PRIVATE -ffast-math)
+
+if(TA_CLANG_TIDY)
+    find_program(CLANG_TIDY NAMES "clang-tidy")
+    set_target_properties(tails-adventure PROPERTIES CXX_CLANG_TIDY "${CLANG_TIDY}")
+endif()
+
+if(ANDROID)
+    find_library(NDK_LOG_LIB log)
+    target_link_libraries(tails-adventure PRIVATE
+        SDL3::SDL3
+        SDL3_image::SDL3_image
+        SDL3_mixer::SDL3_mixer
+        tmxpp
+        toml11::toml11
+        ${NDK_LOG_LIB}
+    )
+elseif(VITA_BUILD)
+    target_link_libraries(tails-adventure PRIVATE
+        SDL3::SDL3-static
+        SDL3_image::SDL3_image-static
+        SDL3_mixer::SDL3_mixer-static
+        SDL3::SDL3-static
+        tmxpp
+        toml11::toml11
+        ScePower_stub
+        SceLibKernel_stub
+        SceIofilemgr_stub
+        SceCtrl_stub
+        SceDisplay_stub
+        SceGxm_stub
+        SceCommonDialog_stub
+        SceAudio_stub
+        SceAudioIn_stub
+        SceTouch_stub
+        SceMotion_stub
+        SceHid_stub
+        SceNet_stub
+    )
+else()
+    target_link_libraries(tails-adventure PRIVATE
+        SDL3::SDL3-static
+        SDL3_image::SDL3_image-static
+        SDL3_mixer::SDL3_mixer-static
+        SDL3::SDL3-static
+        tmxpp
+        toml11::toml11
+    )
+endif()
+
+if(TARGET SDL3::SDL3main)
+    target_link_libraries(tails-adventure PRIVATE SDL3::SDL3main)
+endif()
+
+target_include_directories(tails-adventure PRIVATE
+    src
+    src/engine
+    src/objects
+    src/ui
+    external/SDL/include
+    external/SDL_image/include
+    external/SDL_mixer/include
+    external/tmxpp/include
+    external/toml11/include
+    external/eve/include
+)
+
+if(TA_STATIC)
+    if(WIN32)
+        target_link_options(tails-adventure PRIVATE -static)
+    else()
+        target_link_options(tails-adventure PRIVATE -static-libgcc -static-libstdc++)
+    endif()
+endif()
+
+if(WIN32)
+    target_compile_options(tails-adventure PRIVATE -mwindows)
+    target_link_options(tails-adventure PRIVATE -mwindows)
+endif()
+
+if(TA_UNIX_INSTALL)
+    target_compile_options(tails-adventure PRIVATE -DTA_UNIX_INSTALL)
+    install(TARGETS tails-adventure DESTINATION /usr/local/bin)
+    install(DIRECTORY assets/ DESTINATION /usr/local/share/tails-adventure)
+    install(FILES res/tails-adventure.png DESTINATION /usr/local/share/icons)
+    if(NOT APPLE)
+        install(FILES res/tails-adventure.desktop DESTINATION /usr/local/share/applications)
+    endif()
+else()
+    install(TARGETS tails-adventure DESTINATION ${CMAKE_BINARY_DIR}/output)
+    install(DIRECTORY assets DESTINATION ${CMAKE_BINARY_DIR}/output)
+endif()

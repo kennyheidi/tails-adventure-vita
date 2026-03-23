@@ -1,0 +1,18 @@
+[submodule "external/SDL"]
+	path = external/SDL
+	url = https://github.com/mechakotik/SDL
+[submodule "external/SDL_image"]
+	path = external/SDL_image
+	url = https://github.com/libsdl-org/SDL_image
+[submodule "external/SDL_mixer"]
+	path = external/SDL_mixer
+	url = https://github.com/libsdl-org/SDL_mixer
+[submodule "external/SDL_GameControllerDB"]
+	path = external/SDL_GameControllerDB
+	url = https://github.com/mdqinc/SDL_GameControllerDB
+[submodule "external/tmxpp"]
+	path = external/tmxpp
+	url = https://github.com/mechakotik/tmxpp
+[submodule "external/toml11"]
+	path = external/toml11
+	url = https://github.com/ToruNiina/toml11
