@@ -1,0 +1,75 @@
+[level]
+music = "sound/pm.vgm"
+spawn = [
+	{ x=-2, y=281 },
+	{ x=1988, y=153, flip=true, previous="maps/gi/gi2" }
+]
+
+[objects.static]
+map_transition = [
+	{ selection=6, left=0, top=0, right=2, bottom=320 }
+]
+level_transition = [
+	{ path="maps/gi/gi2", left=2030, top=112, right=2032, bottom=192 }
+]
+breakable_block = [
+	{ tile_x=93, tile_y=23, path="maps/gi/gi_block.png" },
+	{ tile_x=94, tile_y=23, path="maps/gi/gi_block.png", drops_ring=true },
+	{ tile_x=96, tile_y=23, path="maps/gi/gi_block.png" },
+	{ tile_x=96, tile_y=24, path="maps/gi/gi_block.png" },
+	{ tile_x=98, tile_y=23, path="maps/gi/gi_block.png" },
+	{ tile_x=99, tile_y=23, path="maps/gi/gi_block.png", drops_ring=true },
+	{ tile_x=98, tile_y=17, path="maps/gi/gi_block.png" },
+	{ tile_x=99, tile_y=17, path="maps/gi/gi_block.png", drops_ring=true },
+	{ tile_x=99, tile_y=16, path="maps/gi/gi_block.png" },
+	{ tile_x=98, tile_y=10, path="maps/gi/gi_block.png" },
+	{ tile_x=99, tile_y=10, path="maps/gi/gi_block.png" },
+	{ tile_x=99, tile_y=9, path="maps/gi/gi_block.png" },
+	{ tile_x=99, tile_y=8, path="maps/gi/gi_block.png" }
+]
+grass_block = [
+	{ tile_x=32, tile_y=17, path="maps/gi/gi_grass.png" },
+	{ tile_x=32, tile_y=18, path="maps/gi/gi_grass.png" },
+	{ tile_x=32, tile_y=19, path="maps/gi/gi_grass.png" },
+	{ tile_x=33, tile_y=17, path="maps/gi/gi_grass.png" },
+	{ tile_x=33, tile_y=18, path="maps/gi/gi_grass.png" },
+	{ tile_x=33, tile_y=19, path="maps/gi/gi_grass.png" },
+	{ tile_x=34, tile_y=17, path="maps/gi/gi_grass.png" },
+	{ tile_x=34, tile_y=18, path="maps/gi/gi_grass.png" },
+	{ tile_x=34, tile_y=19, path="maps/gi/gi_grass.png" }
+]
+wind = [
+	{ left=272, top=48, right=480, bottom=208, xsp=-1, ysp=1 },
+	{ left=624, top=192, right=656, bottom=240, xsp=0, ysp=1 },
+	{ left=1216, top=80, right=1424, bottom=368, xsp=0, ysp=-1 },
+	{ left=1664, top=224, right=1840, bottom=304, xsp=0, ysp=1 }
+]
+pushable_spring = [
+	{ x=728, y=240 }
+]
+item_box = [
+	{ number=20, item_name="extra_speed", tile_x=67, tile_y=20, offset_x=8 }
+]
+
+[objects.default]
+beehive = [
+	{ x=168, y=224 },
+	{ x=344, y=160 },
+	{ x=696, y=16 },
+	{ x=1064, y=16 },
+	{ x=1112, y=192 },
+	{ x=1240, y=208 },
+	{ x=1400, y=288 },
+	{ tile_x=112, tile_y=18 }
+]
+little_kukku = [
+	{ tile_x=40, tile_y=19, offset_x=8 },
+	{ tile_x=47, tile_y=24, offset_x=8 },
+	{ tile_x=38, tile_y=11 },
+	{ tile_x=41, tile_y=11 },
+	{ tile_x=36, tile_y=5, offset_x=8 },
+	{ tile_x=96, tile_y=9, offset_x=8 },
+	{ tile_x=96, tile_y=16, offset_x=8 },
+	{ tile_x=96, tile_y=22, offset_x=8 },
+	{ tile_x=109, tile_y=23, offset_x=8 },
+]

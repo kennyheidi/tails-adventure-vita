@@ -1,0 +1,27 @@
+[level]
+music = "sound/lr.vgm"
+mode = "seafox"
+water_level = 96
+spawn = [
+	{ x=56, y=478 }
+]
+
+[objects.static]
+breakable_block = [
+	{ tile_x=20, tile_y=54, path="maps/lr/lr_block.png", particle_path="maps/lr/lr_rock.png" },
+]
+level_transition = [
+	{ path="maps/lr/lr8", left=48, top=510, right=96, bottom=512 },
+]
+map_transition = [
+	{ selection=2, seafox=true, left=990, top=0, right=992, bottom=128 }
+]
+
+[objects.default]
+bomber = [
+	{ tile_x=36, offset_x=-56, max_y=60 },
+	{ tile_x=41, offset_x=-56, max_y=60 },
+	{ tile_x=47, offset_x=-56, max_y=60 },
+	{ tile_x=54, offset_x=-56, max_y=60 },
+]
+
